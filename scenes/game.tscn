@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://cqqdj7b06drn2"]
+[gd_scene load_steps=27 format=4 uid="uid://cqqdj7b06drn2"]
 
 [ext_resource type="PackedScene" uid="uid://bfgaw30j6g7x8" path="res://entities/player/player.tscn" id="1_7jktm"]
 [ext_resource type="Script" uid="uid://ruveg0143px0" path="res://scenes/game.gd" id="1_ryrav"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://c04w7fjbbv5c6" path="res://assets/oak_woods_v1.0/background/bg3.png" id="3_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://mhp070n0pcu" path="res://entities/buildings/shop.tscn" id="4_fc0e3"]
 [ext_resource type="Texture2D" uid="uid://lkkwesfdu7ap" path="res://assets/oak_woods_v1.0/background/bg2.png" id="4_iotsf"]
-[ext_resource type="PackedScene" uid="uid://daxcff65xvpp0" path="res://entities/player/stats.tscn" id="5_j5wjh"]
 [ext_resource type="Texture2D" uid="uid://b5ybp64iliyi6" path="res://assets/oak_woods_v1.0/background/bg1.png" id="5_lc2xo"]
 [ext_resource type="Texture2D" uid="uid://crlajwjh5ushe" path="res://assets/oak_woods_v1.0/oak_woods_tileset.png" id="5_vef74"]
 [ext_resource type="Texture2D" uid="uid://bmpe3seslc6oc" path="res://assets/oak_woods_v1.0/decorations/circle.png" id="6_ryrav"]
@@ -458,7 +457,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("../GameHUD/DayText:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -473,7 +472,7 @@ resource_name = "day_text_fade_in"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("../GameHUD/DayText:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -488,7 +487,7 @@ resource_name = "day_text_fade_out"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DayText:modulate")
+tracks/0/path = NodePath("../GameHUD/DayText:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -513,14 +512,14 @@ script = ExtResource("1_ryrav")
 sun_light = NodePath("DirectionalLight2D")
 point_light_1 = NodePath("light1")
 point_light_2 = NodePath("light2")
-day_text = NodePath("CanvasLayer/DayText")
-anim_player = NodePath("CanvasLayer/AnimationDayText")
+day_text = NodePath("GameHUD/DayText")
+anim_player = NodePath("GameHUD/AnimationDayText")
 player = NodePath("player/Player")
 
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("pause_menu")]
 process_mode = 3
 script = ExtResource("2_lc2xo")
-pause_menu = NodePath("../CanvasLayer/pausemenu")
+pause_menu = NodePath("../GameHUD/pausemenu")
 
 [node name="BG" type="ParallaxBackground" parent="."]
 layer = -1
@@ -579,10 +578,9 @@ script = SubResource("GDScript_j5wjh")
 wait_time = 3.0
 autostart = true
 
-[node name="CanvasLayer" parent="." instance=ExtResource("5_j5wjh")]
-layer = 2
+[node name="GameHUD" type="CanvasLayer" parent="."]
 
-[node name="DayText" type="Label" parent="CanvasLayer"]
+[node name="DayText" type="Label" parent="GameHUD"]
 modulate = Color(1, 1, 1, 0)
 offset_left = 416.0
 offset_top = 220.0
@@ -591,20 +589,12 @@ offset_bottom = 332.0
 theme_override_font_sizes/font_size = 80
 text = "DAY"
 
-[node name="AnimationDayText" type="AnimationPlayer" parent="CanvasLayer"]
+[node name="AnimationDayText" type="AnimationPlayer" parent="GameHUD"]
 libraries = {
 &"": SubResource("AnimationLibrary_j5wjh")
 }
 
-[node name="pausemenu" parent="CanvasLayer" instance=ExtResource("10_215e1")]
-process_mode = 2
-visible = false
-offset_left = -3.0
-offset_top = 35.0
-offset_right = -3.0
-offset_bottom = 35.0
-
-[node name="MenuButton" type="Button" parent="CanvasLayer"]
+[node name="MenuButton" type="Button" parent="GameHUD"]
 process_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
@@ -616,6 +606,14 @@ offset_bottom = 67.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 26
 text = "menu"
+
+[node name="pausemenu" parent="GameHUD" instance=ExtResource("10_215e1")]
+process_mode = 2
+visible = false
+offset_left = -3.0
+offset_top = 35.0
+offset_right = -3.0
+offset_bottom = 35.0
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 energy = 0.95
@@ -673,11 +671,11 @@ coin_scene = ExtResource("14_215e1")
 position = Vector2(396, 537)
 
 [connection signal="timeout" from="collectable/Timer" to="collectable" method="_on_timer_timeout"]
-[connection signal="pressed" from="CanvasLayer/pausemenu/Panel/VBoxContainer/Resume" to="Manager" method="_on_resume_pressed"]
-[connection signal="pressed" from="CanvasLayer/pausemenu/Panel/VBoxContainer/Save" to="Manager" method="_on_save_pressed"]
-[connection signal="pressed" from="CanvasLayer/pausemenu/Panel/VBoxContainer/Load" to="Manager" method="_on_load_pressed"]
-[connection signal="pressed" from="CanvasLayer/pausemenu/Panel/VBoxContainer/Quit" to="Manager" method="_on_quit_pressed"]
-[connection signal="pressed" from="CanvasLayer/MenuButton" to="Manager" method="_on_menu_button_pressed"]
+[connection signal="pressed" from="GameHUD/MenuButton" to="Manager" method="_on_menu_button_pressed"]
+[connection signal="pressed" from="GameHUD/pausemenu/Panel/VBoxContainer/Resume" to="Manager" method="_on_resume_pressed"]
+[connection signal="pressed" from="GameHUD/pausemenu/Panel/VBoxContainer/Save" to="Manager" method="_on_save_pressed"]
+[connection signal="pressed" from="GameHUD/pausemenu/Panel/VBoxContainer/Load" to="Manager" method="_on_load_pressed"]
+[connection signal="pressed" from="GameHUD/pausemenu/Panel/VBoxContainer/Quit" to="Manager" method="_on_quit_pressed"]
 [connection signal="timeout" from="DayNight" to="." method="_on_day_night_timeout"]
 
-[editable path="CanvasLayer/pausemenu"]
+[editable path="GameHUD/pausemenu"]
