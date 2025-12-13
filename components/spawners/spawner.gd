@@ -1,14 +1,12 @@
 extends Node2D
 
-# BEST PRACTICE: Явное назначение зависимостей
 @export var mob_scene: PackedScene
-@export var spawn_container: Node2D # Куда спавнить мобов (обычно родитель или спец. нода)
+@export var spawn_container: Node2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 var is_spawning = false
 
 func _ready() -> void:
-	# Если контейнер не назначен, используем родителя (но безопасно)
 	if not spawn_container:
 		spawn_container = get_parent()
 		
@@ -18,10 +16,9 @@ func _ready() -> void:
 	animation_player.play("idle")
 	Signals.connect('day_time', Callable(self, "_on_time_changed"))
 
-func _on_time_changed(state, day_count):
-	# DAY state check (предполагаем, что 1 это DAY, лучше использовать enum из game.gd, но здесь оставим число)
+func _on_time_changed(state, _day_count):
 	if state == 1 and not is_spawning:
-		start_spawning(day_count)
+		start_spawning(_day_count)
 
 func start_spawning(day_count):
 	if not mob_scene or not spawn_container: return
@@ -44,12 +41,6 @@ func start_spawning(day_count):
 func mushroom_spawn():
 	if not mob_scene: return
 	
-	var mob = mob_scene.instantiate()	
-	# Спавним относительно позиции спавнера
-	mob.position = self.global_position # Лучше использовать global_position
+	var mob = mob_scene.instantiate()
+	mob.position = self.global_position
 	spawn_container.add_child(mob)
-	
-	# Обновляем позицию игрока для моба сразу
-	var player = get_tree().get_first_node_in_group("player")
-	if player:
-		Signals.emit_signal("player_position_update", player.global_position)
