@@ -1289,6 +1289,5 @@ position = Vector2(-2.000002, -12)
 scale = Vector2(0.07765624, 0.07078125)
 
 [connection signal="area_entered" from="AttackDirection/DamageBox/HitBox" to="." method="_on_hit_box_area_entered"]
-[connection signal="no_stamina" from="stats" to="." method="_on_stats_no_stamina"]
 
 [editable path="AttackDirection/DamageBox"]
