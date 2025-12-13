@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://daxcff65xvpp0"]
+
+[ext_resource type="Texture2D" uid="uid://11isd3covuul" path="res://assets/oak_woods_v1.0/character/Sprite-0003.png" id="1_37rai"]
+[ext_resource type="Script" uid="uid://bwf7jlmqa4fdt" path="res://entities/player/stats.gd" id="1_dl4uf"]
+[ext_resource type="Texture2D" uid="uid://guikgvavx18j" path="res://assets/oak_woods_v1.0/character/Sprite-0001.png" id="2_0qrqu"]
+[ext_resource type="Texture2D" uid="uid://ymax1hpnd3mx" path="res://assets/oak_woods_v1.0/character/Sprite-0002.png" id="3_mx0kw"]
+
+[node name="stats" type="CanvasLayer"]
+script = ExtResource("1_dl4uf")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+modulate = Color(1, 1, 1, 0.627451)
+offset_left = 376.0
+offset_top = 25.0
+offset_right = 740.0
+offset_bottom = 108.0
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_37rai")
+texture_over = ExtResource("2_0qrqu")
+texture_progress = ExtResource("3_mx0kw")
+tint_over = Color(0.682359, 0.499573, 0.31297, 1)
+tint_progress = Color(1, 0, 0, 1)
+
+[node name="stamina" type="TextureProgressBar" parent="."]
+offset_left = 439.0
+offset_top = 122.0
+offset_right = 678.0
+offset_bottom = 180.0
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_37rai")
+texture_progress = ExtResource("3_mx0kw")
+tint_progress = Color(0.746266, 0.556858, 0.402011, 1)
+
+[node name="healthRegen" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[connection signal="timeout" from="healthRegen" to="." method="_on_heakth_regen_timeout"]

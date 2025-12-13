@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://mhp070n0pcu"]
+
+[ext_resource type="Texture2D" uid="uid://cci5x0x7uo5tt" path="res://assets/oak_woods_v1.0/decorations/shop_anim.png" id="1_7tbwu"]
+[ext_resource type="PackedScene" uid="uid://c0dlesrnbiq37" path="res://components/light/lantern.tscn" id="2_cuikn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cuikn"]
+radius = 49.2544
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofbrj"]
+atlas = ExtResource("1_7tbwu")
+region = Rect2(0, 0, 118, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bn3j"]
+atlas = ExtResource("1_7tbwu")
+region = Rect2(118, 0, 118, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bpksu"]
+atlas = ExtResource("1_7tbwu")
+region = Rect2(236, 0, 118, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nj1vs"]
+atlas = ExtResource("1_7tbwu")
+region = Rect2(354, 0, 118, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1qbj"]
+atlas = ExtResource("1_7tbwu")
+region = Rect2(472, 0, 118, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwhmu"]
+atlas = ExtResource("1_7tbwu")
+region = Rect2(590, 0, 118, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8w6sn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofbrj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2bn3j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bpksu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nj1vs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1qbj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwhmu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="Shop" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cuikn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -23)
+scale = Vector2(1.16949, 1.16949)
+sprite_frames = SubResource("SpriteFrames_8w6sn")
+autoplay = "default"
+frame_progress = 0.571042
+
+[node name="Lantern" parent="." instance=ExtResource("2_cuikn")]
+position = Vector2(57, 19)
+
+[node name="Lantern2" parent="." instance=ExtResource("2_cuikn")]
+position = Vector2(-55.999992, 18)

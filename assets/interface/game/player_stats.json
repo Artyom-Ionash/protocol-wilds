@@ -1,0 +1,8 @@
+{
+    "coins": 0,
+    "equipment": "pistol",
+    "has_pistol": true,
+    "has_rifle": false,
+    "has_shotgun": false,
+    "grenades": 0
+}
