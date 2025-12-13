@@ -1,52 +1,33 @@
 extends CanvasLayer
 
-# Сигналы для обновления UI
-signal health_changed(new_value, diff)
-signal stamina_changed(new_value)
-signal no_stamina()
-
 @onready var health_bar = $HealthBar
 @onready var stamina_bar = $stamina
-# УДАЛЕНО: Прямые ссылки на внешние узлы (health_text, health_anim)
 
-var max_health = 100
-var stamina_cost 
-var attack_cost = 10
-var block_cost = .5
-var slide_cost = 20
-var run_cost = .4
-var old_health = max_health
-
-var stamina = 50:
-	set(value):
-		stamina = value
-		emit_signal("stamina_changed", stamina)
-		if stamina < 1:
-			emit_signal("no_stamina")	
-
-var health:
-	set(value):
-		health = clamp(value, 0, max_health)
-		health_bar.value = health
-		
-		var difference = health - old_health
-		# Вместо прямого управления текстом и анимацией, эмитим сигнал
-		emit_signal("health_changed", health, difference)
-		
-		old_health = health
+# Явное внедрение зависимостей
+@export var health_component: HealthComponent
+@export var stamina_component: StaminaComponent
 
 func _ready():
-	health = max_health
-	health_bar.max_value = health
-	health_bar.value = health
+	# Валидация
+	if not health_component or not stamina_component:
+		printerr("ERROR: StatsUI: Не назначены компоненты (Health или Stamina)!")
+		hide()
+		return
+	
+	# Подписка на Здоровье
+	health_component.health_changed.connect(_on_health_changed)
+	_on_health_changed(health_component.current_health, health_component.max_health, 0)
+	
+	# Подписка на Стамину
+	stamina_component.stamina_changed.connect(_on_stamina_changed)
+	_on_stamina_changed(stamina_component.current_stamina, stamina_component.max_stamina)
 
-func _process(delta):
-	stamina_bar.value = stamina
-	if stamina < 100:
-		stamina += 10 * delta
+func _on_health_changed(current, max_val, _diff):
+	if health_bar:
+		health_bar.max_value = max_val
+		health_bar.value = current
 
-func stamina_consumption():
-	stamina -= stamina_cost
-
-func _on_heakth_regen_timeout() -> void:
-	self.health += 10 # Используем self, чтобы сработал сеттер
+func _on_stamina_changed(current, max_val):
+	if stamina_bar:
+		stamina_bar.max_value = max_val
+		stamina_bar.value = current

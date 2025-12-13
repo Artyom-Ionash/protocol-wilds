@@ -32,9 +32,3 @@ nine_patch_stretch = true
 texture_under = ExtResource("1_37rai")
 texture_progress = ExtResource("3_mx0kw")
 tint_progress = Color(0.746266, 0.556858, 0.402011, 1)
-
-[node name="healthRegen" type="Timer" parent="."]
-wait_time = 4.0
-autostart = true
-
-[connection signal="timeout" from="healthRegen" to="." method="_on_heakth_regen_timeout"]
